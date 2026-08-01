@@ -1,0 +1,50 @@
+n=int(input())
+l=list(map(int,input().split()))
+l=sorted(l)
+if(l[-1]>l[-2]):
+    print(l[-2])
+elif(l[-1]==l[-2]):
+    while True:
+        if(l[1])<l[-2] and l[-1]==l[-2]:
+            print(l[-3])
+            break   
+        elif(l[-1]>=l[-3]):
+            print(l[-4])
+            break
+        elif(l[-1]>=l[-4]):
+            print(l[-5])
+            break
+        elif(l[-1]>=l[-5]):
+            print(l[-6])
+            break
+        elif(l[-1]>=l[-6]):
+            print(l[-7])
+            break
+        elif(l[-1]>=l[-7]):
+            print(l[-8])
+            break
+        elif(l[-1]>=l[-8]):
+            print(l[-9])
+            break
+        elif(l[-1]==l[-9]):
+            print(l[-10])
+            break
+        elif(l[-1]==l[-10]):
+            print(l[-11])
+            break
+        elif(l[-1]==l[-11]):
+            print(l[-12])
+            break
+        elif(l[-1]==l[-12]):
+            print(l[-13])
+            break
+        elif(l[-1]==l[-13]):
+            print(l[-14])
+            break
+        elif(l[-1]==l[-14]):
+            print(l[-15])
+            break
+        elif(l[-1]==l[-15]):
+            print(l[-16])
+            break
+            

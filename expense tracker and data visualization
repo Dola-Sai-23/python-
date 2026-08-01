@@ -1,0 +1,137 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+
+FILE_NAME = "expenses.csv"
+
+# Create CSV file if it doesn't exist
+if not os.path.exists(FILE_NAME):
+    df = pd.DataFrame(columns=["Date", "Category", "Description", "Amount"])
+    df.to_csv(FILE_NAME, index=False)
+
+
+# Function to add expense
+def add_expense():
+    date = input("Enter Date (YYYY-MM-DD): ")
+    category = input("Enter Category (Food, Travel, Shopping, Bills, Others): ")
+    description = input("Enter Description: ")
+
+    while True:
+        try:
+            amount = float(input("Enter Amount: "))
+            break
+        except ValueError:
+            print("Invalid amount! Please enter a number.")
+
+    new_data = pd.DataFrame({
+        "Date": [date],
+        "Category": [category],
+        "Description": [description],
+        "Amount": [amount]
+    })
+
+    new_data.to_csv(FILE_NAME, mode='a', header=False, index=False)
+    print("\nExpense Added Successfully!\n")
+
+
+# View all expenses
+def view_expenses():
+    df = pd.read_csv(FILE_NAME)
+
+    if df.empty:
+        print("\nNo expenses found.\n")
+    else:
+        print("\nExpense Records\n")
+        print(df)
+
+
+# Total expense
+def total_expense():
+    df = pd.read_csv(FILE_NAME)
+
+    if df.empty:
+        print("\nNo expenses available.\n")
+    else:
+        total = df["Amount"].sum()
+        print(f"\nTotal Expense = ₹{total:.2f}\n")
+
+
+# Category Summary
+def category_summary():
+    df = pd.read_csv(FILE_NAME)
+
+    if df.empty:
+        print("\nNo expenses available.\n")
+        return
+
+    summary = df.groupby("Category")["Amount"].sum()
+
+    print("\nCategory-wise Expense")
+    print(summary)
+
+    plt.figure(figsize=(7,7))
+    summary.plot(kind="pie", autopct="%1.1f%%", startangle=90)
+    plt.title("Expense Distribution by Category")
+    plt.ylabel("")
+    plt.show()
+
+
+# Monthly Summary
+def monthly_summary():
+    df = pd.read_csv(FILE_NAME)
+
+    if df.empty:
+        print("\nNo expenses available.\n")
+        return
+
+    df["Date"] = pd.to_datetime(df["Date"])
+    df["Month"] = df["Date"].dt.strftime("%Y-%m")
+
+    monthly = df.groupby("Month")["Amount"].sum()
+
+    print("\nMonthly Expense Summary")
+    print(monthly)
+
+    plt.figure(figsize=(8,5))
+    monthly.plot(kind="bar", color="skyblue")
+    plt.title("Monthly Expenses")
+    plt.xlabel("Month")
+    plt.ylabel("Amount (₹)")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
+
+# Menu
+while True:
+    print("\n========== EXPENSE TRACKER ==========")
+    print("1. Add Expense")
+    print("2. View Expenses")
+    print("3. Total Expenses")
+    print("4. Category Summary")
+    print("5. Monthly Summary")
+    print("6. Exit")
+
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        add_expense()
+
+    elif choice == "2":
+        view_expenses()
+
+    elif choice == "3":
+        total_expense()
+
+    elif choice == "4":
+        category_summary()
+
+    elif choice == "5":
+        monthly_summary()
+
+    elif choice == "6":
+        print("\nThank You for using Expense Tracker!")
+        break
+
+    else:
+        print("Invalid Choice! Please try again.")
